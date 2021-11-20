@@ -1,0 +1,24 @@
+version: '3.4'
+
+services:
+  db:
+    restart: always
+    image: ${DOCKER_REGISTRY-}db
+    build:
+      context: .
+      dockerfile: Infrastructure/DB/Dockerfile
+    ports:
+      - "54322:5432"
+    environment:
+        POSTGRES_DB: ${POSTGRES_DB}
+        POSTGRES_USER: ${POSTGRES_USER}
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+  autofunnerworker:
+    restart: always
+    image: ${DOCKER_REGISTRY-}auto_funner_worker
+    build:
+      context: .
+      dockerfile: AutoFunnerWorker/Dockerfile
+    environment:
+        ConnectionString: ${ConnectionString}

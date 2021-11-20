@@ -1,0 +1,9 @@
+C:\work\AutoSalesFunner\Common\obj\Debug\netcoreapp3.1\Common.AssemblyInfoInputs.cache
+C:\work\AutoSalesFunner\Common\obj\Debug\netcoreapp3.1\Common.AssemblyInfo.cs
+C:\work\AutoSalesFunner\Common\obj\Debug\netcoreapp3.1\Common.csproj.CoreCompileInputs.cache
+C:\work\AutoSalesFunner\Common\bin\Debug\netcoreapp3.1\Common.deps.json
+C:\work\AutoSalesFunner\Common\bin\Debug\netcoreapp3.1\Common.dll
+C:\work\AutoSalesFunner\Common\bin\Debug\netcoreapp3.1\Common.pdb
+C:\work\AutoSalesFunner\Common\obj\Debug\netcoreapp3.1\Common.dll
+C:\work\AutoSalesFunner\Common\obj\Debug\netcoreapp3.1\Common.pdb
+C:\work\AutoSalesFunner\Common\obj\Debug\netcoreapp3.1\Common.csprojAssemblyReference.cache
