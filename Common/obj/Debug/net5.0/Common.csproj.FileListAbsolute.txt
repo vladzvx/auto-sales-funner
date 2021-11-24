@@ -21,3 +21,4 @@ C:\work\auto-sales-funner\Common\obj\Debug\net5.0\Common.csproj.CoreCompileInput
 C:\work\auto-sales-funner\Common\obj\Debug\net5.0\Common.dll
 C:\work\auto-sales-funner\Common\obj\Debug\net5.0\ref\Common.dll
 C:\work\auto-sales-funner\Common\obj\Debug\net5.0\Common.pdb
+C:\work\auto-sales-funner\Common\obj\Debug\net5.0\Common.csprojAssemblyReference.cache

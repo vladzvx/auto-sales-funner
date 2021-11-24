@@ -18,11 +18,9 @@ namespace Common.Controllers
     public class EventController : ControllerBase
     {
         public static string respones = "no resp";
-        private readonly ISettings settings;
         private readonly IDbContextFactory<ContactsContext> dbContextFactory;
-        public EventController(ISettings settings, IDbContextFactory<ContactsContext> dbContextFactory)
+        public EventController(IDbContextFactory<ContactsContext> dbContextFactory)
         {
-            this.settings = settings;
             this.dbContextFactory = dbContextFactory;
 
         }
