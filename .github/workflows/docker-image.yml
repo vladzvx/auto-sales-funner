@@ -1,0 +1,46 @@
+name: deploy
+on:
+  push:
+    branches: [ main ]
+      
+env:
+  IMAGE_NAME: test-image
+      
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Check Out Repo 
+        uses: actions/checkout@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_LOGIN }}
+          password: ${{ secrets.DOCKER_HUB_PWD }}
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+          
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          file: ./AutoFunnerWorker/Dockerfile
+          push: true
+          tags: vladzvx/autofunner:server
+          
+      - name: deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.MAIN_HOST }}
+          username: ${{ secrets.MAIN_USERNAME }}
+          password : ${{ secrets.MAIN_PWD }}
+          port: 22
+          script: |
+            docker stop autofunner_api
+            docker rm autofunner_api
+            docker pull ${{ secrets.DOCKER_HUB_LOGIN }}/autofunner:server
+            docker run --name autofunner_api -d -p 5003:5000 ${{ secrets.DOCKER_HUB_LOGIN }}/autofunner:server
