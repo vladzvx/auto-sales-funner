@@ -31,3 +31,16 @@ jobs:
           file: ./AutoFunnerWorker/Dockerfile
           push: true
           tags: vladzvx/autofunner:server
+          
+      - name: deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.MAIN_HOST }}
+          username: ${{ secrets.MAIN_USERNAME }}
+          password : ${{ secrets.MAIN_PWD }}
+          port: 22
+          script: |
+            docker stop autofunner_api
+            docker rm autofunner_api
+            docker pull ${{ secrets.DOCKER_HUB_LOGIN }}/autofunner:server
+            docker run --name autofunner_api -d -p 5003:5000 ${{ secrets.DOCKER_HUB_LOGIN }}/autofunner:server
