@@ -1,5 +1,6 @@
 using Common.Interfaces;
 using Common.Services;
+using Common.Services.PeriodicWorkers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -19,23 +20,15 @@ namespace AutoFunnerWorker
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddTransient<ISettings, ThreadSafeSettings>();
-            services.AddHostedService<SalesCreator>();
-            //services.AddHostedService<LinksClickChecker>();
+            services.AddSingleton<HeadersProcessor>();
+            services.AddSingleton<NewDealsSettings>();
+            services.AddSingleton<CheckerSettings>();
+            services.AddHostedService<PeriodicWorker<NewDealsSettings>>();
+            services.AddHostedService<PeriodicWorker<CheckerSettings>>();
             services.AddDbContextFactory<ContactsContext>(
                 options => 
                 {
-                    string cnnstr = Environment.GetEnvironmentVariable("ConnectionString");
-                    options.UseNpgsql(cnnstr);
-                    //try
-                    //{
-                    //    var databaseCreator = options.GetService(typeof(IDatabaseCreator));
-                    //    databaseCreator.CreateTables();
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    //A SqlException will be thrown if tables already exist. So simply ignore it.
-                    //}
+                    options.UseNpgsql(Environment.GetEnvironmentVariable("ConnectionString"));
                 });
         }
 

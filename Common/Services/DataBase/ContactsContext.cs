@@ -13,13 +13,13 @@ namespace Common.Services
     {
         public DbSet<Contact> Contacts { get; set; }
 
+        public ContactsContext(DbContextOptions<ContactsContext> options):base(options)
+        {
+            bool temp = Database.EnsureCreated();
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Contact>().HasKey(c => c.ClientId);
         }
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    Environment.GetEnvironmentVariable("ConnectionString");
-        //}
     }
 }

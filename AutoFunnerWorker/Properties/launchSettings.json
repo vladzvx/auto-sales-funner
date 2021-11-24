@@ -25,8 +25,10 @@
     },
     "Docker": {
       "commandName": "Docker",
-      "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "environmentVariables": {
+        "ConnectionString": "User ID=postgres;Password=qw12cv90;Host=195.133.47.166;Port=5432;Database=contacts_db;Timeout=30;CommandTimeout=120;"
+      },
       "publishAllPorts": true,
       "useSSL": true
     }
