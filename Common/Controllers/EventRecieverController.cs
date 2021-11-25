@@ -37,7 +37,7 @@ namespace Common.Controllers
             {
                 string data = await reader.ReadToEndAsync();
                 respones = data;
-                paramts = Newtonsoft.Json.JsonConvert.SerializeObject(Request);
+                paramts = Newtonsoft.Json.JsonConvert.SerializeObject(Request.Body);
                 getLead.IdLead = "";
                 await Utils.Requests.ExecuteGet(getLead.Create, null, async (str) => 
                 {
