@@ -62,7 +62,7 @@ namespace Common.Controllers
                 }
                 catch (Exception ex)
                 {
-                    respones = ex.Message;
+                    respones = Newtonsoft.Json.JsonConvert.SerializeObject(ex);
                 }
 
             }
