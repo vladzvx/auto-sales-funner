@@ -62,6 +62,7 @@ namespace Common.Controllers
         [HttpPost("get")]
         public async Task<string> GetEvent(CancellationToken token)
         {
+            if (respones == "") respones = "empty";
             return respones??"null";
         }
     }
