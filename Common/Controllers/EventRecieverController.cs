@@ -29,11 +29,11 @@ namespace Common.Controllers
         public async Task<string> RecieveEvent(CancellationToken token)
         {
 
-            if (Request.Form.TryGetValue("[FIELDS][ID]", out var t))
+            respones = "";
+            foreach (var v in Request.Form.Keys)
             {
-                respones = t.ToArray()[0];
+                respones += v + ":" + Request.Form[v]+";";
             }
-            
              
             //GetLead getLead = new GetLead();
             //DealUpdate du = new DealUpdate(); 
