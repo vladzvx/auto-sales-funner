@@ -37,7 +37,9 @@ namespace Common.Controllers
             {
                 try
                 {
+                    paramts = this.Request.ContentType;
                     string data = await reader.ReadToEndAsync();
+                    respones = data;
                     getLead.IdLead = "";
                     await Utils.Requests.ExecuteGet(getLead.Create, null, async (str) =>
                     {
