@@ -35,28 +35,36 @@ namespace Common.Controllers
             DealCreator dc = new DealCreator(); 
             using (StreamReader reader = new StreamReader(this.Request.Body, Encoding.UTF8, true, 1024, true))
             {
-                string data = await reader.ReadToEndAsync();
-                respones = data;
-                paramts = Newtonsoft.Json.JsonConvert.SerializeObject(Request.Body);
-                getLead.IdLead = "";
-                await Utils.Requests.ExecuteGet(getLead.Create, null, async (str) => 
+                try
                 {
-                    using (var cont = dbContextFactory.CreateDbContext())
+                    string data = await reader.ReadToEndAsync();
+                    respones = data;
+                    paramts = Newtonsoft.Json.JsonConvert.SerializeObject(Request.Body);
+                    getLead.IdLead = "";
+                    await Utils.Requests.ExecuteGet(getLead.Create, null, async (str) =>
                     {
-                        var res = await cont.Contacts.Where(item => item.Phone == "2222").ToListAsync();
-                        if (res.Any())
+                        using (var cont = dbContextFactory.CreateDbContext())
                         {
-                            await Utils.Requests.ExecuteGet(du.Create, null, null);
-                            await Utils.Requests.ExecuteGet(ml.Create, null, null);
-                            //что записать в БД?
+                            var res = await cont.Contacts.Where(item => item.Phone == "2222").ToListAsync();
+                            if (res.Any())
+                            {
+                                await Utils.Requests.ExecuteGet(du.Create, null, null);
+                                await Utils.Requests.ExecuteGet(ml.Create, null, null);
+                                //что записать в БД?
+                            }
+                            else
+                            {
+                                await Utils.Requests.ExecuteGet(cc.Create, null, null);
+                                await Utils.Requests.ExecuteGet(dc.Create, null, null);
+                            }
                         }
-                        else
-                        {
-                            await Utils.Requests.ExecuteGet(cc.Create, null, null);
-                            await Utils.Requests.ExecuteGet(dc.Create, null, null);
-                        }
-                    }
-                });
+                    });
+                }
+                catch (Exception ex)
+                {
+                    respones = ex.Message;
+                }
+
             }
             return "ok";
         }
