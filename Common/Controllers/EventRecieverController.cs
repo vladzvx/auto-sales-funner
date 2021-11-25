@@ -31,7 +31,7 @@ namespace Common.Controllers
 
             if (Request.Form.TryGetValue("[FIELDS][ID]", out var t))
             {
-                respones = t.ToArray()[1];
+                respones = t.ToArray()[0];
             }
             
              
