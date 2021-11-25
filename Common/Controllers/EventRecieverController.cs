@@ -28,11 +28,12 @@ namespace Common.Controllers
         [HttpPost("recieve")]
         public async Task<string> RecieveEvent(CancellationToken token)
         {
-            respones = "";
-            foreach (var v in Request.Form.Keys)
+
+            if (Request.Form.TryGetValue("FIELDS", out var t))
             {
-                respones += v + ":" + Request.Form[v];
+                respones = t.ToArray()[1];
             }
+            
              
             //GetLead getLead = new GetLead();
             //DealUpdate du = new DealUpdate(); 
