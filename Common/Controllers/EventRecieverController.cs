@@ -62,7 +62,7 @@ namespace Common.Controllers
         [HttpPost("get")]
         public async Task<string> GetEvent(CancellationToken token)
         {
-            return respones;
+            return respones??"null";
         }
     }
 }

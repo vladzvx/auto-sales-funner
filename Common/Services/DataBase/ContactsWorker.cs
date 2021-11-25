@@ -39,7 +39,7 @@ namespace Common.Services.DataBase
                 foreach (var cont in contacts)
                 {
                     cont.HasClick = true;
-                    cont.ClickDateTime = DateTime.UtcNow;
+                    cont.ClickDateTime = DateTime.UtcNow.ToString();
                     context.Contacts.Update(cont);
                 }
                 await context.SaveChangesAsync();

@@ -35,6 +35,6 @@ namespace Common.Models
         public bool HasClick { get; set; }
         
         [Column("CLICK_TIMESTAMP")]
-        public DateTime? ClickDateTime { get; set; }
+        public string ClickDateTime { get; set; }
     }
 }

@@ -45,21 +45,29 @@ namespace Common.Services.PeriodicWorkers
                                     var obj3 = JArray.Parse(obj2.GetValue("datasets").ToString());
                                     if (obj3!=null && obj3.Count > 0)
                                     {
-                                       // var obj4 = obj3
+                                        var obj4 = JObject.Parse(obj3[0].ToString());
+                                        if (obj4 != null && obj4.ContainsKey("data"))
+                                        {
+                                            var obj5 = JArray.Parse(obj4.GetValue("data").ToString());
+                                            if (obj5.Count > 0)
+                                            {
+                                                report.IdDeal = cont.DealId.ToString();
+
+                                                DateTime tmp = DateTime.UtcNow;
+                                                cont.ClickDateTime = tmp.ToString();
+                                                report.Date = string.Format("{0}.{1}.{2} {3}.{4}.{5}", tmp.Day, tmp.Month,
+                                                    tmp.Year, tmp.Hour, tmp.Minute, tmp.Second);
+                                                await Requests.ExecuteGet(report.Create, headersProcessor.AddHeaders, async (re) => { });
+                                                cont.HasClick = true;
+                                                context.Contacts.Update(cont);
+                                            }
+                                        }
                                     }
                                 }
                             }
 
 
-                            report.IdDeal = cont.ClientId.ToString();
 
-                            DateTime tmp = DateTime.UtcNow;
-                            cont.ClickDateTime = tmp;
-                            report.Date = string.Format("{0}.{1}.{2} {3}.{4}.{5}", tmp.Day, tmp.Month,
-                                tmp.Year, tmp.Hour, tmp.Minute, tmp.Second);
-                            await Requests.ExecuteGet(report.Create, headersProcessor.AddHeaders, async (re) => { });
-                            cont.HasClick = true;
-                            context.Contacts.Update(cont);
                         });
 
 
