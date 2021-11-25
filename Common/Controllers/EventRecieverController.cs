@@ -33,13 +33,11 @@ namespace Common.Controllers
             MoveLead ml = new MoveLead(); 
             CreateContact cc = new CreateContact(); 
             DealCreator dc = new DealCreator(); 
-            using (StreamReader reader = new StreamReader(this.Request.Body, Encoding.UTF8, true, 1024, true))
+            using (StreamReader reader = new StreamReader(this.Request.Body))
             {
                 try
                 {
                     string data = await reader.ReadToEndAsync();
-                    respones = data;
-                    paramts = Newtonsoft.Json.JsonConvert.SerializeObject(Request.Body);
                     getLead.IdLead = "";
                     await Utils.Requests.ExecuteGet(getLead.Create, null, async (str) =>
                     {
@@ -62,7 +60,7 @@ namespace Common.Controllers
                 }
                 catch (Exception ex)
                 {
-                    respones = Newtonsoft.Json.JsonConvert.SerializeObject(ex);
+                    paramts = Newtonsoft.Json.JsonConvert.SerializeObject(ex);
                 }
 
             }
