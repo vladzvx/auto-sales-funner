@@ -29,7 +29,7 @@ namespace Common.Controllers
         public async Task<string> RecieveEvent(CancellationToken token)
         {
 
-            if (Request.Form.TryGetValue("FIELDS", out var t))
+            if (Request.Form.TryGetValue("[FIELDS][ID]", out var t))
             {
                 respones = t.ToArray()[1];
             }
