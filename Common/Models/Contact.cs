@@ -8,14 +8,19 @@ namespace Common.Models
     [Table("Contacts")]
     public class Contact
     {
+        [Column("Id")]
+        public long Id { get; set; }
         [Column("CLIENT_ID")]
-        public long ClientId { get; set; }
+        public string ClientId { get; set; }
+
+        [Column("ID-DEAL")]
+        public string DealId { get; set; }
 
         [Column("ID-LINK")]
         public string LinkId { get; set; }
 
         [Column("COMPANY_ID")]
-        public long CompanyId { get; set; }
+        public string CompanyId { get; set; }
         
         [Column("COMPANY_NAME")]
         public string CompanyName { get; set; }
@@ -30,6 +35,6 @@ namespace Common.Models
         public bool HasClick { get; set; }
         
         [Column("CLICK_TIMESTAMP")]
-        public DateTime ClickDateTime { get; set; }
+        public DateTime? ClickDateTime { get; set; }
     }
 }

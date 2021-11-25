@@ -13,7 +13,7 @@ namespace Common.Services
         public string AuthToken { get; init; }
         public HeadersProcessor()
         {
-            AuthToken = "token";
+            AuthToken = "sk_imgVHnzPdKfpeLjF";
         }
 
         public void AddHeaders(HttpRequestMessage httpRequestMessage)

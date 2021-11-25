@@ -13,8 +13,8 @@ namespace Common.Services.LinkCreators
         public string IdLink { get; set; }
         public override string Create()
         {
-            return string.Format("https://api.short.io/links/expand?domain={0}&path={1}",
-                Domain, IdLink);
+            return string.Format("https://api-v2.short.cm/statistics/link/{0}",
+                IdLink);
         }
     }
 }

@@ -23,8 +23,8 @@ namespace AutoFunnerWorker
             services.AddSingleton<HeadersProcessor>();
             services.AddSingleton<NewDealsSettings>();
             services.AddSingleton<CheckerSettings>();
-            services.AddHostedService<PeriodicWorker<NewDealsSettings>>();
-            services.AddHostedService<PeriodicWorker<CheckerSettings>>();
+            //services.AddHostedService<PeriodicWorker<NewDealsSettings>>();
+            //services.AddHostedService<PeriodicWorker<CheckerSettings>>();
             services.AddDbContextFactory<ContactsContext>(
                 options => 
                 {

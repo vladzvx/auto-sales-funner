@@ -2,6 +2,7 @@
 using Common.Services.LinkCreators;
 using Common.Utils;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,10 +36,27 @@ namespace Common.Services.PeriodicWorkers
                         
                         await Requests.ExecuteGet(dealCreator.Create, headersProcessor.AddHeaders, async (res) =>
                         {
+                            JObject obj = JObject.Parse(res);
+                            if (obj!=null&&obj.ContainsKey("clickStatistics"))
+                            {
+                                var obj2 = JObject.Parse(obj.GetValue("clickStatistics").ToString());
+                                if (obj2 != null && obj2.ContainsKey("datasets"))
+                                {
+                                    var obj3 = JArray.Parse(obj2.GetValue("datasets").ToString());
+                                    if (obj3!=null && obj3.Count > 0)
+                                    {
+                                       // var obj4 = obj3
+                                    }
+                                }
+                            }
+
+
                             report.IdDeal = cont.ClientId.ToString();
-                            cont.ClickDateTime = DateTime.UtcNow;
-                            report.Date = string.Format("{0}.{1}.{2} {3}.{4}.{5}", cont.ClickDateTime.Day, cont.ClickDateTime.Month,
-                                cont.ClickDateTime.Year, cont.ClickDateTime.Hour, cont.ClickDateTime.Minute, cont.ClickDateTime.Second);
+
+                            DateTime tmp = DateTime.UtcNow;
+                            cont.ClickDateTime = tmp;
+                            report.Date = string.Format("{0}.{1}.{2} {3}.{4}.{5}", tmp.Day, tmp.Month,
+                                tmp.Year, tmp.Hour, tmp.Minute, tmp.Second);
                             await Requests.ExecuteGet(report.Create, headersProcessor.AddHeaders, async (re) => { });
                             cont.HasClick = true;
                             context.Contacts.Update(cont);

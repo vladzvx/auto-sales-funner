@@ -19,7 +19,7 @@ namespace Common.Services
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Contact>().HasKey(c => c.ClientId);
+            modelBuilder.Entity<Contact>().HasKey(c => c.Id);
         }
     }
 }
