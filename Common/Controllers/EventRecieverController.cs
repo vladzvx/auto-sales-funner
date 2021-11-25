@@ -18,6 +18,7 @@ namespace Common.Controllers
     public class EventController : ControllerBase
     {
         public static string respones = "no resp";
+        public static string paramts = "no params";
         private readonly IDbContextFactory<ContactsContext> dbContextFactory;
         public EventController(IDbContextFactory<ContactsContext> dbContextFactory)
         {
@@ -36,6 +37,7 @@ namespace Common.Controllers
             {
                 string data = await reader.ReadToEndAsync();
                 respones = data;
+                paramts = Newtonsoft.Json.JsonConvert.SerializeObject(Request);
                 getLead.IdLead = "";
                 await Utils.Requests.ExecuteGet(getLead.Create, null, async (str) => 
                 {
@@ -64,6 +66,12 @@ namespace Common.Controllers
         {
             if (respones == "") respones = "empty";
             return respones??"null";
+        }
+
+        [HttpPost("get2")]
+        public async Task<string> GetEvent2(CancellationToken token)
+        {
+            return paramts;
         }
     }
 }
