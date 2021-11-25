@@ -31,7 +31,7 @@ namespace Common.Controllers
             respones = "";
             foreach (var v in Request.Form.Keys)
             {
-                respones += v;
+                respones += v + ":" + Request.Form[v];
             }
              
             //GetLead getLead = new GetLead();
