@@ -20,6 +20,7 @@ namespace Common.Services.PeriodicWorkers
             SalesPerAction = 40;
             this.Time = new TimeSpan(0, 0, 0);
             this.WorkPeriod = new TimeSpan(0, 1, 0);
+            this.Period = new TimeSpan(0, 0, 0);
             dealCreator = new DealCreator() { };
             action = async (contextFactory) =>
             {

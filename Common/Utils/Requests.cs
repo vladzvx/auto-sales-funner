@@ -22,5 +22,17 @@ namespace Common.Utils
                 if (responseProcessor != null) await responseProcessor(res);
             }
         }
+
+
+        public static async Task ExecuteGetForm(Func<string> linkGen, Action<HttpRequestMessage> headersSetter = null, Func<string, Task> responseProcessor = null)
+        {
+            using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, linkGen()))
+            {
+                if (headersSetter != null) headersSetter(requestMessage);
+                var resp = await httpClient.SendAsync(requestMessage);
+                string res = await resp.Content.ReadAsStringAsync();
+                if (responseProcessor != null) await responseProcessor(res);
+            }
+        }
     }
 }

@@ -9,7 +9,7 @@ namespace Common.Services.LinkCreators
 {
     class MoveLead : LinkCreatorBase
     {
-        public string IdLead { get; init; }
+        public string IdLead { get; set; }
         public override string Create()
         {
             return string.Format("https://ecu-global.bitrix24.ua/rest/{0}/crm.lead.delete?id={1}", Target, IdLead);

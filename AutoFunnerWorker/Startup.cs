@@ -19,6 +19,7 @@ namespace AutoFunnerWorker
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpClient();
             services.AddControllers();
             services.AddSingleton<HeadersProcessor>();
             services.AddSingleton<NewDealsSettings>();
