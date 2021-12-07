@@ -40,6 +40,7 @@ namespace Common.Controllers
             ml.IdLead = Request.Form["data[FIELDS][ID]"];
             await Utils.Requests.ExecuteGet(getLead.Create, null, async (str) =>
             {
+                respones = str;
                 JObject obj1 = JObject.Parse(str);
                 var phone = obj1["result"]["PHONE"][0]["VALUE"].ToString().Replace("(","").
                 Replace(")", "").Replace(" ", "").Replace("-", "").Replace("\"", "");
@@ -68,7 +69,7 @@ namespace Common.Controllers
                         DateTime dt = DateTime.UtcNow;
                         dct.Title = name + " " + phone;
                         dct.ContactId = "";//todo из предыдущего запроса
-                        dct.ApiKey = "";//todo сделать ссылку
+                        dct.ApiKey = "utm_term";//todo сделать ссылку
                         dct.Time = string.Format("{0}.{1}.{2} {3}:{4}:{5}", dt.Day,dt.Month,dt.Year,dt.Hour,dt.Minute,dt.Second);
                         await Utils.Requests.ExecuteGet(dct.Create, null, null);
                     }
