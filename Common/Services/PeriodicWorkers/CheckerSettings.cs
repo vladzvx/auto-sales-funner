@@ -55,7 +55,7 @@ namespace Common.Services.PeriodicWorkers
 
                                                 DateTime tmp = DateTime.UtcNow;
                                                 cont.ClickDateTime = tmp.ToString();
-                                                report.Date = string.Format("{0}.{1}.{2} {3}.{4}.{5}", tmp.Day, tmp.Month,
+                                                report.Date = string.Format("{0}.{1}.{2} {3}:{4}:{5}", tmp.Day, tmp.Month,
                                                     tmp.Year, tmp.Hour, tmp.Minute, tmp.Second);
                                                 await Requests.ExecuteGet(report.Create, headersProcessor.AddHeaders, async (re) => { });
                                                 cont.HasClick = true;

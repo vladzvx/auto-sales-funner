@@ -42,6 +42,7 @@ namespace Common.Controllers
             MoveLead ml = new MoveLead();
             CreateContact cc = new CreateContact();
             DealCreator dc = new DealCreator();
+            DealCreatorTime dct = new DealCreatorTime();
             getLead.IdLead = Request.Form["data[FIELDS][ID]"];
             ml.IdLead = Request.Form["data[FIELDS][ID]"];
             await Utils.Requests.ExecuteGet(getLead.Create, null, async (str) =>
@@ -66,54 +67,22 @@ namespace Common.Controllers
                         du.UF_CRM_UKAZHITEDATUV = temp5;
                         du.UF_CRM_FORMNAME = temp6;
                         uc.Mail = email.ToString();
-                        await Utils.Requests.ExecuteGet(du.Create, null, null);
                         await Utils.Requests.ExecuteGet(uc.Create, null, null);
                         await Utils.Requests.ExecuteGet(ml.Create, null, null);;
-                        //что записать в БД?
                     }
                     else
                     {
                         cc.Mail = email;
                         cc.Name = name;
-                        cc.Phone = phone;
-                        await Utils.Requests.ExecuteGet(cc.Create, null, null);
-                        //await Utils.Requests.ExecuteGet(dc.Create, null, null);
+                        DateTime dt = DateTime.UtcNow;
+                        dct.Title = name + " " + phone;
+                        dct.ContactId = "";//todo из предыдущего запроса
+                        dct.ApiKey = "";//todo сделать ссылку
+                        dct.Time = string.Format("{0}.{1}.{2} {3}:{4}:{5}", dt.Day,dt.Month,dt.Year,dt.Hour,dt.Minute,dt.Second);
+                        await Utils.Requests.ExecuteGet(dct.Create, null, null);
                     }
                 }
             });
-            //using (StreamReader reader = new StreamReader(this.Request.Body))
-            //{
-            //    try
-            //    {
-            //        paramts = this.Request.ContentType;
-            //        string data = await reader.ReadToEndAsync();
-            //        respones = data;
-            //        getLead.IdLead = "";
-            //        await Utils.Requests.ExecuteGet(getLead.Create, null, async (str) =>
-            //        {
-            //            using (var cont = dbContextFactory.CreateDbContext())
-            //            {
-            //                var res = await cont.Contacts.Where(item => item.Phone == "2222").ToListAsync();
-            //                if (res.Any())
-            //                {
-            //                    await Utils.Requests.ExecuteGet(du.Create, null, null);
-            //                    await Utils.Requests.ExecuteGet(ml.Create, null, null);
-            //                    //что записать в БД?
-            //                }
-            //                else
-            //                {
-            //                    await Utils.Requests.ExecuteGet(cc.Create, null, null);
-            //                    await Utils.Requests.ExecuteGet(dc.Create, null, null);
-            //                }
-            //            }
-            //        });
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        paramts = Newtonsoft.Json.JsonConvert.SerializeObject(ex);
-            //    }
-
-            //}
             return "ok";
         }
 
