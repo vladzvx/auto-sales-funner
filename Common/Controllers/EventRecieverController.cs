@@ -25,17 +25,10 @@ namespace Common.Controllers
         public EventController(IDbContextFactory<ContactsContext> dbContextFactory)
         {
             this.dbContextFactory = dbContextFactory;
-
         }
         [HttpPost("recieve")]
         public async Task<string> RecieveEvent(CancellationToken token)
         {
-            //210
-            //foreach (var v in Request.Form.Keys)
-            //{
-            //    respones += v + ":" + Request.Form[v]+";";
-            //}
-
             GetLead getLead = new GetLead();
             UpdateContact uc = new UpdateContact();
             DealUpdate du = new DealUpdate();
@@ -48,8 +41,6 @@ namespace Common.Controllers
             await Utils.Requests.ExecuteGet(getLead.Create, null, async (str) =>
             {
                 JObject obj1 = JObject.Parse(str);
-
-
                 var phone = obj1["result"]["PHONE"][0]["VALUE"].ToString().Replace("(","").
                 Replace(")", "").Replace(" ", "").Replace("-", "").Replace("\"", "");
                 var email = obj1["result"]["EMAIL"][0]["VALUE"].ToString(); ;
@@ -91,6 +82,12 @@ namespace Common.Controllers
         {
             if (respones == "") respones = "empty";
             return respones??"null";
+        }
+
+        [HttpPost("test")]
+        public async Task<string> Test(CancellationToken token)
+        {
+            return System.Text.Json.JsonSerializer.Serialize(new TestLinkCreator());
         }
 
         [HttpPost("get2")]

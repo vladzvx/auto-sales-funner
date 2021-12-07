@@ -14,7 +14,7 @@ namespace Common.Services.LinkCreators
         public string Date { get; set; }
         public override string Create()
         {
-            return string.Format("https://ecu-global.bitrix24.ua/rest/{0}/crm.item.update?entityTypeId={1}&id={2}&fields[ufCrm2DateTimeCliclShortLink]={3}", Target, EntityTypeId, IdDeal,Date);        
+            return string.Format("https://ecu-global.bitrix24.ua/rest/{0}/crm.item.update?entityTypeId={1}&id={2}&fields[ufCrm2DateTimeCliclShortLink]={3}", Target, EntityTypeId, IdDeal, Date);       
         }
     }
 }

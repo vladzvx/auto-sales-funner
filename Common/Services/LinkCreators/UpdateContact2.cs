@@ -11,7 +11,7 @@ namespace Common.Services.LinkCreators
     {
         public override string Create()
         {
-            return string.Format("https://ecu-global.bitrix24.ua/rest/12/ck6uqtx0ne2pm1xj/crm.contact.update?id=8&fields[UF_CRM_1637162427]=UF_CRM_COOKIES", Target);
+            return string.Format("https://ecu-global.bitrix24.ua/rest/{0}/crm.contact.update?id=8&fields[UF_CRM_1637162427]=UF_CRM_COOKIES", Target);
         }
     }
 }

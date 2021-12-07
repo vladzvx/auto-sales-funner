@@ -1,4 +1,5 @@
 ﻿using Common.Interfaces;
+using Common.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace Common.Services.LinkCreators
         public override string Create()
         {
             return string.Format("https://ecu-global.bitrix24.ua/rest/{0}/crm.item.add?entityTypeId={1}&fields[title]={2}&fields[categoryId]={3}&fields[stageId]={4}&fields[contactId]={5}&fields[ufCrm2ShortLinkSms]={6}&fields[ufCrm2LidPrishel]=1&fields[ufCrm2DateTimeCliclShortLink]={7}",
-                Target, EntityTypeId, Title, CategoryId, "DT162_2:UC_Y6K9JP", ContactId, ApiKey,Time);
+                Target, EntityTypeId, Title, CategoryId, Options.StageId2, ContactId, ApiKey,Time);
         }
     }
 }
