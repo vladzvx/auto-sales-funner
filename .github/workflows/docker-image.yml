@@ -43,4 +43,4 @@ jobs:
             docker stop autofunner_api
             docker rm autofunner_api
             docker pull vladzvx/autofunner:server
-            #docker run --name autofunner_api -d -p 5003:5000 vladzvx/autofunner:server
+            docker run --name autofunner_api -d -p 5003:5000 vladzvx/autofunner:server
