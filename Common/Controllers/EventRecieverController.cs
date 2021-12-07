@@ -68,7 +68,7 @@ namespace Common.Controllers
                         cc.Name = name;
                         DateTime dt = DateTime.UtcNow;
                         dct.Title = name + " " + phone;
-                        dct.ContactId = "";//todo из предыдущего запроса
+                        //dct.ContactId = "";//todo из предыдущего запроса
                         dct.ApiKey = "utm_term";//todo сделать ссылку
                         dct.Time = string.Format("{0}.{1}.{2} {3}:{4}:{5}", dt.Day,dt.Month,dt.Year,dt.Hour,dt.Minute,dt.Second);
                         await Utils.Requests.ExecuteGet(dct.Create, null, null);
