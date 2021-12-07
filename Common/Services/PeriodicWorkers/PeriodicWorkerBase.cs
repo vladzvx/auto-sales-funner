@@ -46,7 +46,7 @@ namespace Common.Services
                         lastExecution = DateTime.UtcNow;
                         executed = true;
                     }
-                    if (DateTime.UtcNow.Date.Subtract(lastExecution) > settings.Period)
+                    if (DateTime.UtcNow.Subtract(lastExecution) > settings.Period)
                     {
                         executed = false;
                     }
