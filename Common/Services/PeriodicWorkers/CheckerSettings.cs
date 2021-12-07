@@ -18,7 +18,7 @@ namespace Common.Services.PeriodicWorkers
 
         public CheckerSettings(HeadersProcessor headersProcessor)
         {
-            Time = new TimeSpan(0, 0, 0);
+            Time = Options.GetActionTime("empty");
             this.WorkPeriod = new TimeSpan(0, 1, 0);
             this.Period = new TimeSpan(0, 0, 0);
             dealCreator = new CheckShortLinkCreator() { };

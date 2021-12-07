@@ -18,9 +18,9 @@ namespace Common.Services.PeriodicWorkers
         public NewDealsSettings(HeadersProcessor headersProcessor)
         {
             SalesPerAction = 40;
-            this.Time = new TimeSpan(0, 0, 0);
+            this.Time = Options.GetTime("DealCreationTime");
             this.WorkPeriod = new TimeSpan(0, 1, 0);
-            this.Period = new TimeSpan(0, 0, 0);
+            this.Period = Options.GetTime("DealCreationPeriod");
             dealCreator = new DealCreator() { };
             action = async (contextFactory) =>
             {
