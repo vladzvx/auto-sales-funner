@@ -13,6 +13,6 @@ namespace Common.Utils
         public static string StageId { get; } = Environment.GetEnvironmentVariable("NEW_STAGE_ID") ?? "DT162_2:NEW";
         public static string StageId2 { get; } = Environment.GetEnvironmentVariable("STAGE_ID2") ?? "DT162_2:UC_Y6K9JP";
         public static string CategoryId { get; } = Environment.GetEnvironmentVariable("CATEGORY_ID") ?? "2.0";
-        public static string Domain { get; } = Environment.GetEnvironmentVariable("DOMAIN") ?? "l.osbb-kr.com.ua";
+        public static string Domain { get; } = Environment.GetEnvironmentVariable("DOMAIN");
     }
 }
