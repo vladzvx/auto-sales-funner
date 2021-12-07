@@ -43,4 +43,4 @@ jobs:
             docker stop autofunner_api
             docker rm autofunner_api
             docker pull vladzvx/autofunner:server
-            docker run --name autofunner_api -d -p 5003:5000 -e ConnectionString="User ID=postgres;Password=${{ secrets.DB_PWD }};Host=${{ secrets.MAIN_HOST }};Port=5432;Database=contacts_db;Timeout=30;CommandTimeout=120;" vladzvx/autofunner:server
+            docker run --name autofunner_api -d -p 5003:5000 --env API_KEY="1222" -e ConnectionString="User ID=postgres;Password=${{ secrets.DB_PWD }};Host=${{ secrets.MAIN_HOST }};Port=5432;Database=contacts_db;Timeout=30;CommandTimeout=120;" vladzvx/autofunner:server
