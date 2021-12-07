@@ -18,7 +18,7 @@ namespace Common.Services.PeriodicWorkers
 
         public CheckerSettings(HeadersProcessor headersProcessor)
         {
-            Time = Options.GetActionTime("empty");
+            Time = Options.GetTime("empty");
             this.WorkPeriod = new TimeSpan(0, 1, 0);
             this.Period = new TimeSpan(0, 0, 0);
             dealCreator = new CheckShortLinkCreator() { };
@@ -28,7 +28,7 @@ namespace Common.Services.PeriodicWorkers
                 using (var context = contextFactory.CreateDbContext())
                 {
                     IEnumerable<Contact> contacts = await context.Contacts
-                        .Where(item => item.LinkId != null && !item.HasClick)
+                        .Where(item => item.DealId != null && item.LinkId != null && !item.HasClick)
                         .ToListAsync();
                     foreach (var cont in contacts)
                     {
