@@ -43,4 +43,4 @@ jobs:
             docker stop autofunner_api
             docker rm autofunner_api
             docker pull  ${{ secrets.DOCKER_HUB_LOGIN }}/autofunner:server
-            docker run --name autofunner_api -d -p 5003:5000 -e=DOMAIN="111" --env API_KEY=${{ secrets.API_KEY }} -e ConnectionString="User ID=postgres;Password=${{ secrets.DB_PWD }};Host=${{ secrets.MAIN_HOST }};Port=5432;Database=contacts_db;Timeout=30;CommandTimeout=120;"  ${{ secrets.DOCKER_HUB_LOGIN }}/autofunner:server
+            docker run --name autofunner_api -d -p 5003:5000 -e=DOMAIN="l.osbb-kr.com.ua" --env API_KEY=${{ secrets.API_KEY }} -e ConnectionString="User ID=postgres;Password=${{ secrets.DB_PWD }};Host=${{ secrets.MAIN_HOST }};Port=5432;Database=contacts_db;Timeout=30;CommandTimeout=120;"  ${{ secrets.DOCKER_HUB_LOGIN }}/autofunner:server
