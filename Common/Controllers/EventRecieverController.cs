@@ -26,7 +26,7 @@ namespace Common.Controllers
         {
             this.dbContextFactory = dbContextFactory;
         }
-        [HttpPost("recieve")]
+        [HttpPost("recieve1")]
         public async Task<string> RecieveEvent(CancellationToken token)
         {
             GetLead getLead = new GetLead();
@@ -42,6 +42,7 @@ namespace Common.Controllers
             {
                 respones = str;
                 JObject obj1 = JObject.Parse(str);
+                if (obj1["error"] != null) return;
                 var phone = obj1["result"]["PHONE"][0]["VALUE"].ToString().Replace("(","").
                 Replace(")", "").Replace(" ", "").Replace("-", "").Replace("\"", "");
                 var email = obj1["result"]["EMAIL"][0]["VALUE"].ToString(); ;
@@ -49,16 +50,19 @@ namespace Common.Controllers
                 var temp4 = obj1["result"]["UF_CRM_COOKIES"].ToString();
                 var temp5 = obj1["result"]["UF_CRM_UKAZHITEDATUV"].ToString();
                 var temp6 = obj1["result"]["UF_CRM_FORMNAME"].ToString();
+                var temp7 = obj1["result"]["UTM_TERM"].ToString();
 
                 using (var cont = dbContextFactory.CreateDbContext())
                 {
                     var res = await cont.Contacts.Where(item => item.Phone == phone).ToListAsync();
-                    if (res.Any())
+                    bool debug = false;
+                    if (debug||res.Any())
                     {
                         du.UF_CRM_COOKIES = temp4;
                         du.UF_CRM_UKAZHITEDATUV = temp5;
                         du.UF_CRM_FORMNAME = temp6;
                         uc.Mail = email.ToString();
+                        await Utils.Requests.ExecuteGet(du.Create, null, null);
                         await Utils.Requests.ExecuteGet(uc.Create, null, null);
                         await Utils.Requests.ExecuteGet(ml.Create, null, null);;
                     }
@@ -66,12 +70,25 @@ namespace Common.Controllers
                     {
                         cc.Mail = email;
                         cc.Name = name;
-                        DateTime dt = DateTime.UtcNow;
+                        cc.Phone = phone;
+                        await Utils.Requests.ExecuteGet(cc.Create, null, async (str)=> 
+                        {
+                            JObject obj1 = JObject.Parse(str);
+                            dct.ContactId = obj1["result"].ToString();
+                        });
                         dct.Title = name + " " + phone;
-                        //dct.ContactId = "";//todo из предыдущего запроса
-                        dct.ApiKey = "utm_term";//todo сделать ссылку
+                        DateTime dt = DateTime.UtcNow;
+
+                        dct.UF_CRM_COOKIES = temp4;
+                        dct.UF_CRM_UKAZHITEDATUV = temp5;
+                        dct.UF_CRM_FORMNAME = temp6;
+
+                        dct.ApiKey = temp7;
                         dct.Time = string.Format("{0}.{1}.{2} {3}:{4}:{5}", dt.Day,dt.Month,dt.Year,dt.Hour,dt.Minute,dt.Second);
-                        await Utils.Requests.ExecuteGet(dct.Create, null, null);
+                        await Utils.Requests.ExecuteGet(dct.Create, null, async (str)=> 
+                        {
+                            var eee = str;
+                        });
                     }
                 }
             });

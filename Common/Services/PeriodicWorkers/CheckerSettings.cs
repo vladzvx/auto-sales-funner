@@ -1,4 +1,5 @@
 ﻿using Common.Models;
+using Common.Services.DataBase;
 using Common.Services.LinkCreators;
 using Common.Utils;
 using Microsoft.EntityFrameworkCore;
@@ -15,9 +16,10 @@ namespace Common.Services.PeriodicWorkers
     {
         private CheckShortLinkCreator dealCreator;
         private ReportClik report;
-
-        public CheckerSettings(HeadersProcessor headersProcessor)
+        private readonly LogWriter logWriter;
+        public CheckerSettings(HeadersProcessor headersProcessor, LogWriter logWriter)
         {
+            this.logWriter = logWriter;
             Time = Options.GetTime("empty");
             this.WorkPeriod = new TimeSpan(0, 1, 0);
             this.Period = new TimeSpan(0, 0, 0);
@@ -25,13 +27,17 @@ namespace Common.Services.PeriodicWorkers
             report = new ReportClik();
             action = async (contextFactory) =>
             {
+                logWriter.Log("Checker action started!");
                 using (var context = contextFactory.CreateDbContext())
                 {
+                    logWriter.Log("Contacts requesting!");
                     IEnumerable<Contact> contacts = await context.Contacts
                         .Where(item => item.DealId != null && item.LinkId != null && !item.HasClick)
                         .ToListAsync();
+                    logWriter.Log("Geted " + contacts.ToList().Count.ToString() + " contacts.");
                     foreach (var cont in contacts)
                     {
+                        logWriter.Log("Processing contact: " + System.Text.Json.JsonSerializer.Serialize(cont));
                         dealCreator.IdLink = cont.LinkId;
                         
                         await Requests.ExecuteGet(dealCreator.Create, headersProcessor.AddHeaders, async (res) =>
@@ -60,6 +66,7 @@ namespace Common.Services.PeriodicWorkers
                                                 await Requests.ExecuteGet(report.Create, headersProcessor.AddHeaders, async (re) => { });
                                                 cont.HasClick = true;
                                                 context.Contacts.Update(cont);
+                                                logWriter.Log("Updating contact. New data: " + System.Text.Json.JsonSerializer.Serialize(cont));
                                             }
                                         }
                                     }
@@ -74,6 +81,7 @@ namespace Common.Services.PeriodicWorkers
 
                     }
                     await context.SaveChangesAsync();
+                    logWriter.Log("Changes saved");
                 }
             };
         }

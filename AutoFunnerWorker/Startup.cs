@@ -1,5 +1,6 @@
 using Common.Interfaces;
 using Common.Services;
+using Common.Services.DataBase;
 using Common.Services.PeriodicWorkers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,10 +25,17 @@ namespace AutoFunnerWorker
             services.AddSingleton<HeadersProcessor>();
             services.AddSingleton<NewDealsSettings>();
             services.AddSingleton<CheckerSettings>();
+            services.AddSingleton<LogWriter>();
             services.AddHostedService<PeriodicWorker<NewDealsSettings>>();
             services.AddHostedService<PeriodicWorker<CheckerSettings>>();
+            services.AddHostedService<LogsWriterWrapper>();
             services.AddDbContextFactory<ContactsContext>(
                 options => 
+                {
+                    options.UseNpgsql(Environment.GetEnvironmentVariable("ConnectionString"));
+                });
+            services.AddDbContextFactory<LogsContext>(
+                options =>
                 {
                     options.UseNpgsql(Environment.GetEnvironmentVariable("ConnectionString"));
                 });

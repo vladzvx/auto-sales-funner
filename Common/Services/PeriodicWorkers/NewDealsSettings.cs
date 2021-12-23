@@ -1,4 +1,5 @@
 ﻿using Common.Models;
+using Common.Services.DataBase;
 using Common.Services.LinkCreators;
 using Common.Utils;
 using Microsoft.EntityFrameworkCore;
@@ -14,24 +15,30 @@ namespace Common.Services.PeriodicWorkers
     public class NewDealsSettings : ThreadSafeSettingsBase
     {
         private DealCreator dealCreator;
+        private readonly LogWriter logWriter;
 
-        public NewDealsSettings(HeadersProcessor headersProcessor)
+        public NewDealsSettings(HeadersProcessor headersProcessor, LogWriter logWriter)
         {
             SalesPerAction = 40;
             this.Time = Options.GetTime("DealCreationTime");
             this.WorkPeriod = new TimeSpan(0, 1, 0);
             this.Period = Options.GetTime("DealCreationPeriod");
             dealCreator = new DealCreator() { };
+            this.logWriter = logWriter;
             action = async (contextFactory) =>
             {
                 using (var context = contextFactory.CreateDbContext())
                 {
+                    logWriter.Log("Executing action! (NewDeals creator)");
+                    logWriter.Log("Requesting contacts...");
                     IEnumerable<Contact> contacts = await context.Contacts
                         .Where(item => item.DealId == null)
                         .Take((int)this.SalesPerAction)
                         .ToListAsync();
+                    logWriter.Log("Geted "+ contacts.ToList().Count.ToString()+ " contacts.");
                     foreach (var cont in contacts)
                     {
+                        logWriter.Log("Processing contact: " + System.Text.Json.JsonSerializer.Serialize(cont)) ;
                         dealCreator.Title = cont.Phone;
                         dealCreator.CompanyId = cont.CompanyId;
                         dealCreator.ContactId = cont.ClientId;
@@ -49,6 +56,7 @@ namespace Common.Services.PeriodicWorkers
                                     {
                                         cont.DealId = obj3["id"].ToString();
                                         context.Contacts.Update(cont);
+                                        logWriter.Log("Updating contact");
                                     }
                                 }
                             }
@@ -56,6 +64,7 @@ namespace Common.Services.PeriodicWorkers
                         });
                     }
                     await context.SaveChangesAsync();
+                    logWriter.Log("Changes saved");
                 }
             };
         }

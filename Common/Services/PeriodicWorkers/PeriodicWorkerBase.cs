@@ -1,4 +1,5 @@
 ﻿using Common.Interfaces;
+using Common.Services.DataBase;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -15,10 +16,12 @@ namespace Common.Services
         private readonly IDbContextFactory<ContactsContext> dbContextFactory;
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         private readonly Thread WorkerThread;
-        public PeriodicWorker(TWorker settings, IDbContextFactory<ContactsContext> dbContextFactory)
+        private readonly LogWriter logWriter;
+        public PeriodicWorker(TWorker settings, IDbContextFactory<ContactsContext> dbContextFactory,LogWriter logWriter)
         {
             WorkerThread = new Thread(new ParameterizedThreadStart(worker));
             this.settings = settings;
+            this.logWriter = logWriter;
             this.dbContextFactory = dbContextFactory;
         }
 
@@ -35,19 +38,21 @@ namespace Common.Services
                     {
                         try
                         {
+                            logWriter.Log("Starting periodic action!");
                             if (settings.action!=null)
                                 settings.action(dbContextFactory);
-                            //ContactsWorker.CreateLinks(dbContextFactory, settings).Wait();
+                            logWriter.Log("Periodic action ended!");
                         }
                         catch (Exception ex)
                         {
-
+                            logWriter.LogError(ex,"Starting periodic failed!");
                         }
                         lastExecution = DateTime.UtcNow;
                         executed = true;
                     }
                     if (DateTime.UtcNow.Subtract(lastExecution) > settings.Period)
                     {
+                        logWriter.Log("Switching executed status!");
                         executed = false;
                     }
                     Thread.Sleep(settings.WorkPeriod);

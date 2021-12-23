@@ -17,6 +17,8 @@ services:
   autofunnerworker:
     restart: always
     image: ${DOCKER_REGISTRY-}auto_funner_worker
+    ports:
+      - "5000:5000"
     build:
       context: .
       dockerfile: AutoFunnerWorker/Dockerfile

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -14,11 +15,14 @@ namespace Common.Utils
 
         public static async Task ExecuteGet(Func<string> linkGen, Action<HttpRequestMessage> headersSetter=null, Func<string,Task> responseProcessor=null)
         {
-            using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, linkGen()))
+            string req = linkGen();
+            ILinkCreator.LogWriter.Log("Request: "+req);
+            using (var requestMessage = new HttpRequestMessage(HttpMethod.Get,req ))
             {
                 if (headersSetter != null) headersSetter(requestMessage);
                 var resp = await httpClient.SendAsync(requestMessage);
                 string res = await resp.Content.ReadAsStringAsync();
+                ILinkCreator.LogWriter.Log("Response: " + res);
                 if (responseProcessor != null) await responseProcessor(res);
             }
         }
