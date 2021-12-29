@@ -10,7 +10,7 @@ namespace Common.Services.LinkCreators
 {
     class DealUpdate : LinkCreatorBase
     {
-        public string IdDeal { get; init; }
+        public string IdDeal { get; set; }
         public string UF_CRM_COOKIES { get; set; }
         public string UF_CRM_FORMNAME { get; set; }
         public string UF_CRM_UKAZHITEDATUV { get; set; }

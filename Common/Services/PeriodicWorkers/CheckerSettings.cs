@@ -5,6 +5,7 @@ using Common.Utils;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,9 +18,11 @@ namespace Common.Services.PeriodicWorkers
         private CheckShortLinkCreator dealCreator;
         private ReportClik report;
         private readonly LogWriter logWriter;
-        public CheckerSettings(HeadersProcessor headersProcessor, LogWriter logWriter)
+        private readonly ConcurrentDictionary<DateTime, MoveLead> LeadsForRemove;
+        public CheckerSettings(HeadersProcessor headersProcessor, LogWriter logWriter, ConcurrentDictionary<DateTime, MoveLead> LeadsForRemove)
         {
             this.logWriter = logWriter;
+            this.LeadsForRemove = LeadsForRemove;
             Time = Options.GetTime("empty");
             this.WorkPeriod = new TimeSpan(0, 1, 0);
             this.Period = new TimeSpan(0, 0, 0);
@@ -27,6 +30,14 @@ namespace Common.Services.PeriodicWorkers
             report = new ReportClik();
             action = async (contextFactory) =>
             {
+                var temp = LeadsForRemove.Keys.Where(item=>item.Subtract(DateTime.UtcNow).TotalSeconds<0);
+                foreach (DateTime dt in temp)
+                {
+                    if (LeadsForRemove.TryRemove(dt, out var IT))
+                    {
+                        Requests.ExecuteGet(IT.Create, null, null).Wait();
+                    }
+                }
                 logWriter.Log("Checker action started!");
                 using (var context = contextFactory.CreateDbContext())
                 {
@@ -72,9 +83,6 @@ namespace Common.Services.PeriodicWorkers
                                     }
                                 }
                             }
-
-
-
                         });
 
 

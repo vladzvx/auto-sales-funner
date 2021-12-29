@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Common.Services.LinkCreators
 {
-    class MoveLead : LinkCreatorBase
+    public class MoveLead : LinkCreatorBase
     {
         public string IdLead { get; set; }
         public override string Create()
