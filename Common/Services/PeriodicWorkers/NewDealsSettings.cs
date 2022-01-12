@@ -39,7 +39,7 @@ namespace Common.Services.PeriodicWorkers
                     foreach (var cont in contacts)
                     {
                         logWriter.Log("Processing contact: " + System.Text.Json.JsonSerializer.Serialize(cont)) ;
-                        dealCreator.Title = cont.Phone;
+                        dealCreator.Title = cont.ClientId;
                         dealCreator.CompanyId = cont.CompanyId;
                         dealCreator.ContactId = cont.ClientId;
                         dealCreator.ApiKey = cont.ShortLink;
